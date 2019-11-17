@@ -1,10 +1,14 @@
-def mergeSort(alist, leftdex, rightdex):
+def mergeSort(alist, leftdex = 0, rightdex = None):
+    # Allow for missing parameters
+    if rightdex is None:
+        rightdex = len(alist) - 1
 
     print("Splitting from " + str(leftdex) + " to " + str(rightdex))
+    print(alist[leftdex:rightdex + 1])
 
-    print(alist[leftdex:rightdex+1])
-
-    if rightdex - leftdex > 0:
+    # Check for base case, a list size of at least 1.
+    list_size = rightdex - leftdex
+    if list_size > 0:
 
         mid = ((rightdex + leftdex) // 2)
 
@@ -15,35 +19,49 @@ def mergeSort(alist, leftdex, rightdex):
         mergeSort(alist, leftdex, mid)
         mergeSort(alist, mid + 1, rightdex)
 
+        # Establish helpers
+        left_size = mid - leftdex + 1
+        right_size = rightdex - mid
+        left_start = leftdex
+        right_start = mid + 1
+
         i = 0
         j = 0
-        k = 0
-        print(mid)
-        print(leftdex)
-        print(rightdex)
-
-        while i < (mid - leftdex + 1) and j < (rightdex - mid):
-            if alist[leftdex + i] <= alist[mid + j + 1]:
-                alist[leftdex + k] = alist[leftdex + i]
-                i = i + 1
+        temp = []
+        # Merge left and right sublists by adding the smallest values to a temp list in order
+        while i < left_size and j < right_size:
+            if alist[left_start + i] <= alist[right_start + j]:
+                temp.append(alist[left_start + i])
+                i += 1
             else:
-                alist[leftdex + k], alist[mid + j + 1] = alist[mid + j + 1], alist[leftdex + k]
-                j = j + 1
-            k = k + 1
+                temp.append(alist[right_start + j])
+                j += 1
 
-        while i < (mid - leftdex):
-            alist[k] = alist[leftdex + i]
+        # Add the remaining values to the temp list
+        while i < left_size:
+            temp.append(alist[left_start + i])
             i = i + 1
-            k = k + 1
 
-        while j < (rightdex - mid):
-            alist[k] = alist[mid + j]
+        while j < right_size:
+            temp.append(alist[right_start + j])
             j = j + 1
-            k = k + 1
+
+        print("Copying sublist to mainlist.....")
+        print("Mainlist: " + str(alist))
+        print("Sublist = " + str(temp))
+
+        z = 0
+        # Overwrite the main list with the temp sublist
+        for num in temp:
+            alist[left_start + z] = num
+            z += 1
+
+        print("New list: " + str(alist))
+
     print("Merging from " + str(leftdex) + " to " + str(rightdex))
-    print(alist[leftdex:rightdex+1])
+    print(alist[leftdex:rightdex + 1])
 
-alist = [54,26,93,17]
-mergeSort(alist, 0, len(alist)-1)
-print(alist)
 
+mylist = [34, 15, 53, 32, 12, 64, 67, 21]
+mergeSort(mylist)
+print("Result: " + str(mylist))
