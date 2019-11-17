@@ -16,6 +16,7 @@ def mergeSort(alist, leftdex = 0, rightdex = None):
         print(leftdex)
         print(rightdex)
 
+        # Recursively mergeSort two halves of the list
         mergeSort(alist, leftdex, mid)
         mergeSort(alist, mid + 1, rightdex)
 
